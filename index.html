@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monte seu PC</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  🖥️ Monte seu PC
+  <span>— arraste as peças para os slots corretos</span>
+</header>
+
+<div id="layout">
+
+  <!-- SIDEBAR: lista de peças disponíveis -->
+  <div id="sidebar">
+    <h2>Peças</h2>
+    <div id="parts-list"></div>
+    <div style="padding:8px">
+      <button id="reset-btn">↺ Reiniciar</button>
+    </div>
+  </div>
+
+  <!-- BOARD: gabinete com slots de encaixe -->
+  <div id="board">
+    <div id="pc-case">
+      <div id="pc-case-label">Gabinete ATX — arraste peças aqui</div>
+      <div id="slots-grid">
+
+        <div class="slot slot-row-full" id="slot-mb" data-slot="mb">
+          <span class="slot-label">Placa-mãe</span>
+        </div>
+
+        <div class="slot slot-row-half" id="slot-cpu" data-slot="cpu">
+          <span class="slot-label">CPU / Socket</span>
+        </div>
+
+        <div class="slot slot-row-half" id="slot-ram" data-slot="ram">
+          <span class="slot-label">Slots RAM</span>
+        </div>
+
+        <div class="slot slot-row-full" id="slot-gpu" data-slot="gpu">
+          <span class="slot-label">Slot PCIe — GPU (opcional)</span>
+        </div>
+
+        <div class="slot slot-row-half" id="slot-storage" data-slot="storage">
+          <span class="slot-label">SSD / HD</span>
+        </div>
+
+        <div class="slot slot-row-half" id="slot-psu" data-slot="psu">
+          <span class="slot-label">Fonte (PSU)</span>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="toast"></div>
+  </div>
+
+  <!-- PAINEL DE INFORMAÇÕES / COMPATIBILIDADE -->
+  <div id="info">
+    <h2>Detalhes</h2>
+    <div id="info-empty">
+      Passe o mouse ou arraste uma peça para ver detalhes e compatibilidades.
+    </div>
+    <div id="info-content">
+      <img id="info-img" src="" alt="">
+      <div id="info-name"></div>
+      <div id="info-id"></div>
+      <div id="compat-title">Compatível com</div>
+      <div id="compat-list"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- elemento visual que segue o cursor durante o arraste -->
+<div class="drag-ghost" id="drag-ghost" style="display:none">
+  <img id="ghost-img" src="" alt="">
+  <span id="ghost-name"></span>
+</div>
+
+<!-- dados dos componentes -->
+<script src="data.js"></script>
+<!-- lógica da aplicação -->
+<script src="app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,421 @@
+/* =============================================
+   RESET E BASE
+   ============================================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f0f2f5;
+  color: #1a1a1a;
+  user-select: none;
+}
+
+/* =============================================
+   HEADER
+   ============================================= */
+header {
+  background: #1a1a2e;
+  color: #fff;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header span {
+  font-size: 12px;
+  font-weight: 400;
+  opacity: .6;
+  margin-left: 4px;
+}
+
+/* =============================================
+   LAYOUT GERAL
+   ============================================= */
+#layout {
+  display: flex;
+  height: calc(100vh - 46px);
+}
+
+/* =============================================
+   SIDEBAR (lista de peças)
+   ============================================= */
+#sidebar {
+  width: 200px;
+  background: #fff;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#sidebar h2 {
+  font-size: 10px;
+  font-weight: 700;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: 12px 12px 6px;
+}
+
+#parts-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* =============================================
+   CARDS DE PEÇA (sidebar)
+   ============================================= */
+.part-card {
+  padding: 7px 9px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fff;
+  cursor: grab;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: border-color .12s, background .12s;
+}
+
+.part-card:hover {
+  border-color: #378ADD;
+  background: #f0f7ff;
+}
+
+.part-card.dragging-source {
+  opacity: .4;
+}
+
+.part-card.installed {
+  opacity: .45;
+  cursor: default;
+  background: #f7f7f7;
+  border-style: dashed;
+}
+
+.part-card img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.part-card .pname {
+  font-weight: 500;
+  color: #222;
+  line-height: 1.3;
+}
+
+.part-card .ptype {
+  font-size: 10px;
+  color: #999;
+}
+
+/* =============================================
+   BOARD (gabinete central)
+   ============================================= */
+#board {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 16px;
+  gap: 10px;
+  overflow-y: auto;
+  background: #f0f2f5;
+}
+
+#pc-case {
+  width: 100%;
+  max-width: 520px;
+  background: #fff;
+  border: 2px solid #cdd1da;
+  border-radius: 14px;
+  padding: 16px;
+  position: relative;
+}
+
+#pc-case-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+/* =============================================
+   GRID DE SLOTS
+   ============================================= */
+#slots-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.slot-row-full {
+  grid-column: 1 / -1;
+}
+
+/* =============================================
+   SLOTS INDIVIDUAIS
+   ============================================= */
+.slot {
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  min-height: 72px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: border-color .15s, background .15s;
+  position: relative;
+}
+
+.slot .slot-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #bbb;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  text-align: center;
+}
+
+/* estados do slot */
+.slot.highlight {
+  border-color: #378ADD;
+  background: #eef5ff;
+}
+
+.slot.incompatible {
+  border-color: #e24b4a;
+  background: #fff5f5;
+}
+
+.slot.filled {
+  border-style: solid;
+  border-color: #97C459;
+  background: #f4fbea;
+}
+
+.slot.filled .slot-label {
+  color: #639922;
+}
+
+/* slot da placa-mãe é maior */
+#slot-mb {
+  min-height: 90px;
+}
+
+/* =============================================
+   PEÇA INSTALADA DENTRO DO SLOT
+   ============================================= */
+.installed-piece {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 7px;
+  padding: 5px 8px;
+  width: 100%;
+  font-size: 12px;
+  cursor: default;
+}
+
+.installed-piece img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.installed-piece .ip-name {
+  font-weight: 500;
+  color: #1a1a1a;
+  flex: 1;
+}
+
+.installed-piece .ip-remove {
+  cursor: pointer;
+  color: #bbb;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+.installed-piece .ip-remove:hover {
+  color: #e24b4a;
+}
+
+/* =============================================
+   PAINEL DE INFORMAÇÕES (direita)
+   ============================================= */
+#info {
+  width: 210px;
+  background: #fff;
+  border-left: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+#info h2 {
+  font-size: 10px;
+  font-weight: 700;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+#info-empty {
+  font-size: 12px;
+  color: #bbb;
+  line-height: 1.6;
+}
+
+#info-content {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#info-img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+#info-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+#info-id {
+  font-size: 10px;
+  color: #bbb;
+  font-family: monospace;
+}
+
+#compat-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-top: 4px;
+}
+
+#compat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.compat-item {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: #eef5ff;
+  color: #185FA5;
+  border: 1px solid #c5d8f8;
+}
+
+.compat-item.ok {
+  background: #f0fce6;
+  color: #3B6D11;
+  border-color: #c0dd97;
+}
+
+/* =============================================
+   TOAST DE FEEDBACK
+   ============================================= */
+#toast {
+  display: none;
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a2e;
+  color: #fff;
+  font-size: 12px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  white-space: nowrap;
+  z-index: 99;
+  pointer-events: none;
+}
+
+/* =============================================
+   BOTÃO REINICIAR
+   ============================================= */
+#reset-btn {
+  margin-top: auto;
+  padding: 7px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 12px;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+  width: 100%;
+}
+
+#reset-btn:hover {
+  background: #f5f5f5;
+  color: #e24b4a;
+  border-color: #f09595;
+}
+
+/* =============================================
+   GHOST DE ARRASTE (segue o cursor)
+   ============================================= */
+.drag-ghost {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1000;
+  padding: 6px 10px;
+  background: #1a1a2e;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: .92;
+}
+
+.drag-ghost img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  filter: invert(1);
+}
