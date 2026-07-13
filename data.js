@@ -16,7 +16,7 @@ const components = [
     id: "mb-b660",
     nome: "Placa-mãe B660M DDR4",
     tipo: "Placa-mãe",
-    img: "https://cdn-icons-png.flaticon.com/512/2103/2103633.png",
+    img: "https://images5.kabum.com.br/produtos/fotos/sync_mirakl/365185/large/Placa-M-e-Gigabyte-B660M-Gaming-X-Intel-LGA-1700-mATX-DDR4_1773266922.jpg",
     slot: "mb",
     compatibilidade: [
       "cpu-i5-12400", "cpu-i7-12700",
@@ -30,7 +30,7 @@ const components = [
     id: "mb-z690",
     nome: "Placa-mãe Z690 DDR5",
     tipo: "Placa-mãe",
-    img: "https://cdn-icons-png.flaticon.com/512/2103/2103633.png",
+    img: "https://img.terabyteshop.com.br/produto/g/placa-mae-asus-rog-strix-z690-g-gaming-wifi-chipset-z690-intel-lga-1700-atx-ddr5-rgb-90mb19g0-m0eay0_134230.jpg",
     slot: "mb",
     compatibilidade: [
       "cpu-i5-12400", "cpu-i7-12700",
@@ -44,7 +44,7 @@ const components = [
     id: "cpu-i5-12400",
     nome: "Intel Core i5-12400",
     tipo: "Processador",
-    img: "https://cdn-icons-png.flaticon.com/512/984/984196.png",
+    img: "https://images.tcdn.com.br/img/img_prod/1165337/processador_intel_core_i5_12400_2_5ghz_4_4ghz_turbo_12a_geracao_6_cores_12_threads_lga_1700_com_cool_21378_1_ac7ae769ec80b8ac59838e3c21cdf964.jpg",
     slot: "cpu",
     compatibilidade: [
       "mb-b660", "mb-z690",
@@ -56,7 +56,7 @@ const components = [
     id: "cpu-i7-12700",
     nome: "Intel Core i7-12700",
     tipo: "Processador",
-    img: "https://cdn-icons-png.flaticon.com/512/984/984196.png",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwqY3OmIQTcV_bEIT3mF_dcC_8aDe85Li3kOmoDimO-T0mQt_HUvQPAyk&s=10",
     slot: "cpu",
     compatibilidade: [
       "mb-b660", "mb-z690",
@@ -68,7 +68,7 @@ const components = [
     id: "ram-ddr4",
     nome: "RAM DDR4 16GB",
     tipo: "Memória RAM",
-    img: "https://cdn-icons-png.flaticon.com/512/984/984233.png",
+    img: "https://images6.kabum.com.br/produtos/fotos/172366/memoria-kingston-fury-beast-16gb-3200mhz-ddr4-cl16-preto-kf432c16bb1-16_1626271100_g.jpg",
     slot: "ram",
     compatibilidade: [
       "mb-b660", "mb-z690",
@@ -79,7 +79,7 @@ const components = [
     id: "ram-ddr5",
     nome: "RAM DDR5 16GB",
     tipo: "Memória RAM",
-    img: "https://cdn-icons-png.flaticon.com/512/984/984233.png",
+    img: "https://d5gag3xtge2og.cloudfront.net/producao/35306148/G/1.jpg",
     slot: "ram",
     compatibilidade: [
       "mb-z690",
@@ -90,7 +90,7 @@ const components = [
     id: "storage-ssd-m2",
     nome: "SSD NVMe M.2 1TB",
     tipo: "Armazenamento",
-    img: "https://cdn-icons-png.flaticon.com/512/984/984204.png",
+    img: "https://images2.kabum.com.br/produtos/fotos/621162/ssd-pcie-kingston-nv3-1-tb-m-2-2280-nvme-leitura-6000-mb-s-e-gravacao-4000-mb-s-snv3s-1000g_1726082185_gg.jpg",
     slot: "storage",
     compatibilidade: [
       "mb-b660", "mb-z690"
@@ -98,41 +98,19 @@ const components = [
   },
   {
     id: "storage-hd-sata",
-    nome: "HD SATA 2TB",
+    nome: "HD SATA 2TB WD Green",
     tipo: "Armazenamento",
-    img: "https://cdn-icons-png.flaticon.com/512/984/984204.png",
+    img: "https://media.pichau.com.br/media/catalog/product/cache/2f958555330323e505eba7ce930bdf27/w/d/wds100t3g0a2.jpg",
     slot: "storage",
     compatibilidade: [
       "mb-b660", "mb-z690"
     ]
   },
   {
-    id: "gpu-rtx3060",
-    nome: "NVIDIA RTX 3060",
-    tipo: "Placa de Vídeo",
-    img: "https://cdn-icons-png.flaticon.com/512/984/984225.png",
-    slot: "gpu",
-    compatibilidade: [
-      "mb-b660", "mb-z690",
-      "psu-650w", "psu-750w"
-    ]
-  },
-  {
-    id: "gpu-rx6600",
-    nome: "AMD RX 6600",
-    tipo: "Placa de Vídeo",
-    img: "https://cdn-icons-png.flaticon.com/512/984/984225.png",
-    slot: "gpu",
-    compatibilidade: [
-      "mb-b660", "mb-z690",
-      "psu-500w", "psu-650w"
-    ]
-  },
-  {
     id: "psu-500w",
-    nome: "Fonte 500W 80+ Bronze",
+    nome: "Fonte 500W 80+ Bronze Corsair",
     tipo: "Fonte",
-    img: "https://cdn-icons-png.flaticon.com/512/984/984244.png",
+    img: "https://images5.kabum.com.br/produtos/fotos/34215/34215_index_gg.jpg",
     slot: "psu",
     compatibilidade: [
       "mb-b660",
@@ -143,9 +121,9 @@ const components = [
   },
   {
     id: "psu-650w",
-    nome: "Fonte 650W 80+ Gold",
+    nome: "Fonte 650W 80+ Gold Corsair",
     tipo: "Fonte",
-    img: "https://cdn-icons-png.flaticon.com/512/984/984244.png",
+    img: "https://media.pichau.com.br/media/catalog/product/cache/2f958555330323e505eba7ce930bdf27/c/p/cp-9020278-br.jpg",
     slot: "psu",
     compatibilidade: [
       "mb-b660", "mb-z690",
@@ -156,9 +134,9 @@ const components = [
   },
   {
     id: "psu-750w",
-    nome: "Fonte 750W 80+ Gold",
+    nome: "Fonte RM 750W 80+ Gold Corsair",
     tipo: "Fonte",
-    img: "https://cdn-icons-png.flaticon.com/512/984/984244.png",
+    img: "https://lojaibyte.vteximg.com.br/arquivos/ids/391276-1200-1200/rmbranco0001.jpg",
     slot: "psu",
     compatibilidade: [
       "mb-z690",
