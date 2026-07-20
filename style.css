@@ -420,3 +420,21 @@ header span {
   object-fit: contain;
   filter: invert(1);
 }
+
+.info-installation-gif {
+  width: 100%;
+  max-width: 250px; /* Ou o tamanho máximo da sua lateral */
+  height: auto;
+  border-radius: 8px;
+  margin-top: 15px; /* Dá um espaçamento do bloco de cima */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Um efeito leve de sombra */
+}
+
+.info-description {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #444; /* Um cinza escuro confortável para leitura */
+  margin-top: 12px;
+  margin-bottom: 15px;
+  text-align: justify; /* Alinha o texto bonitinho nas duas margens */
+}

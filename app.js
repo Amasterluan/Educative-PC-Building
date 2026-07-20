@@ -13,34 +13,121 @@ const installed = {};
 /* =============================================
    SIDEBAR — constrói os cards de peça
    ============================================= */
+// function buildSidebar() {
+//   const list = document.getElementById("parts-list");
+//   list.innerHTML = "";
+
+//   const componentesOrganizados = components.sort((a, b) => {
+//     // Se 'a' for placa-mãe e 'b' não for, 'a' sobe (retorna -1)
+//       if (a.slot === slots.PLACAMAE && b.slot !== slots.PLACAMAE) return -1;
+//     // Se 'b' for placa-mãe e 'a' não for, 'b' sobe (retorna 1)
+//     if (b.slot === slots.PLACAMAE && a.slot !== slots.PLACAMAE) return 1;
+//     return a.slot.localeCompare(b.slot);
+//   }); 
+
+//   console.log(componentesOrganizados);
+
+//   componentesOrganizados.forEach(c => {
+//     const card = document.createElement("div");
+//     card.className = "part-card" + (c.slot != slots.PLACAMAE && !motherboardInstalled() ? " installed" : "");
+//     card.dataset.id = c.id;
+//     card.innerHTML = `
+//       <img src="${c.img}" alt="${c.nome}">
+//       <div>
+//         <div class="pname">${c.nome}</div>
+//         <div class="ptype">${c.slot}</div>
+//       </div>
+//     `;
+
+//     if (!isInstalled(c.id)) {
+//       card.addEventListener("mousedown", e => startDrag(e, c.id));
+//       card.addEventListener("mouseenter", () => showInfo(c.id));
+//       card.addEventListener("mouseleave", hideInfo);
+//     }
+
+//     list.appendChild(card);
+//   });
+// }
+
+
 function buildSidebar() {
   const list = document.getElementById("parts-list");
   list.innerHTML = "";
 
-  components.forEach(c => {
-    const card = document.createElement("div");
-    card.className = "part-card" + (isInstalled(c.id) ? " installed" : "");
-    card.dataset.id = c.id;
-    card.innerHTML = `
-      <img src="${c.img}" alt="${c.nome}">
-      <div>
-        <div class="pname">${c.nome}</div>
-        <div class="ptype">${c.tipo}</div>
-      </div>
-    `;
+  // 1. Agrupamos os componentes pelo slot deles
+  const componentesAgrupados = Object.groupBy(components, (c) => c.slot);
 
-    if (!isInstalled(c.id)) {
-      card.addEventListener("mousedown", e => startDrag(e, c.id));
-      card.addEventListener("mouseenter", () => showInfo(c.id));
-      card.addEventListener("mouseleave", hideInfo);
-    }
+  // 2. Definimos a ordem exata das seções (Placa-Mãe sempre primeiro)
+  const ordemDasCategorias = [
+    slots.PLACAMAE,
+    slots.CPU,
+    slots.RAM,
+    slots.HDSSD,
+    slots.GPU,
+    slots.FONTE
+  ];
 
-    list.appendChild(card);
+  const temPlacaMaeInstalada = motherboardInstalled();
+
+  // 3. Iteramos sobre as categorias na ordem que definimos
+  ordemDasCategorias.forEach((slotNome) => {
+    const itensDaCategoria = componentesAgrupados[slotNome];
+
+    // Se não houver nenhuma peça cadastrada desse slot no array, pula para a próxima
+    if (!itensDaCategoria || itensDaCategoria.length === 0) return;
+
+    // 4. Criamos um contêiner visual para a categoria (div ou section)
+    const categorySection = document.createElement("div");
+    categorySection.className = "category-section";
+
+    // Criamos o título da categoria (ex: "Placa-Mãe", "Processador")
+    const categoryTitle = document.createElement("h3");
+    categoryTitle.className = "category-title";
+    categoryTitle.textContent = slotNome;
+    categorySection.appendChild(categoryTitle);
+
+    // 5. Renderizamos as peças específicas desta categoria
+    itensDaCategoria.forEach(c => {
+      const card = document.createElement("div");
+      
+      // Mantive a sua lógica de bloqueio: se não for placa-mãe e não tiver placa instalada, bloqueia
+      const estaBloqueado = c.slot !== slots.PLACAMAE && !temPlacaMaeInstalada;
+      card.className = "part-card" + (estaBloqueado ? " installed" : ""); // Sugestão: talvez mudar a classe "installed" para "locked" no CSS faça mais sentido visualmente depois!
+      
+      card.dataset.id = c.id;
+      card.innerHTML = `
+        <img src="${c.img}" alt="${c.nome}">
+        <div>
+          <div class="pname">${c.nome}</div>
+          <div class="ptype">${c.slot}</div>
+        </div>
+      `;
+
+      if (!isInstalled(c.id)) {
+        card.addEventListener("mousedown", e => startDrag(e, c.id));
+        card.addEventListener("mouseenter", () => showInfo(c.id));
+        card.addEventListener("mouseleave", hideInfo);
+      }
+
+      // Adiciona o card dentro da seção da categoria dele
+      categorySection.appendChild(card);
+    });
+
+    // 6. Por fim, adicionamos a categoria inteira na barra lateral
+    list.appendChild(categorySection);
   });
 }
 
 function isInstalled(id) {
   return Object.values(installed).includes(id);
+}
+
+function motherboardInstalled(){
+  if (Object.keys(installed).length == 0){
+    return false;
+  }
+
+  return true;
 }
 
 /* =============================================
@@ -51,6 +138,10 @@ const ghost = document.getElementById("drag-ghost");
 
 function startDrag(e, id) {
   if (isInstalled(id)) return;
+  if (!motherboardInstalled() && idMap[id].slot != slots.PLACAMAE) {
+    console.log(id);
+    return;
+  }
   dragging = id;
 
   const c = idMap[id];
@@ -115,6 +206,7 @@ function tryDrop(compId, slotType, slotElemId) {
   }
 
   /* incompatibilidade com peça já instalada */
+  
   const conflict = checkCompatibility(compId);
   if (conflict) {
     showToast("❌ " + comp.nome + " é incompatível com " + idMap[conflict].nome);
@@ -130,16 +222,28 @@ function tryDrop(compId, slotType, slotElemId) {
 }
 
 function checkCompatibility(newId) {
-  const newComp = idMap[newId];
-
-  for (const [, existId] of Object.entries(installed)) {
-    if (!existId) continue;
-    if (!newComp.compatibilidade.includes(existId)) {
-      return existId; /* retorna o ID da peça conflitante */
-    }
+  
+  if (!motherboardInstalled()){
+    return null;
   }
 
-  return null;
+  const newComp = idMap[newId];
+
+  if (newComp.compatibilidade.length == 0) return null;
+
+  const PlacaMae = idMap[installed["Placa-Mãe"]];
+  const compPlacaMae = PlacaMae.compatibilidade;
+
+  let compativel = false;
+  compPlacaMae.forEach(p => {
+    newComp.compatibilidade.forEach(c => {
+      if (p == c){
+        compativel = true;
+      }
+    })
+  });
+
+  return compativel ? null : PlacaMae.id;
 }
 
 /* =============================================
@@ -165,7 +269,7 @@ function install(compId, slotType, slotElemId) {
   piece.innerHTML = `
     <img src="${comp.img}" alt="${comp.nome}">
     <span class="ip-name">${comp.nome}</span>
-    <span class="ip-remove" title="Remover">×</span>
+    <span class="ip-remove" title="Remover">${slotType == slots.PLACAMAE ? "" : "x"}</span>
   `;
 
   piece.querySelector(".ip-remove").addEventListener("click", () => {
@@ -245,14 +349,32 @@ function showInfo(id) {
   cl.innerHTML = "";
 
   c.compatibilidade.forEach(cid => {
-    const cc = idMap[cid];
-    if (!cc) return;
 
     const div = document.createElement("div");
-    div.className = "compat-item" + (isInstalled(cid) ? " ok" : "");
-    div.textContent = (isInstalled(cid) ? "✓ " : "") + cc.nome;
+    div.className = "compat-item";
+    div.textContent = cid;
     cl.appendChild(div);
   });
+
+  const gifElement = document.getElementById("info-gif");
+  const gifDaCategoria = gifsInstalacao[c.slot];
+
+  if (gifDaCategoria) {
+    gifElement.src = gifDaCategoria;
+    gifElement.style.display = "block";
+  } else {
+    gifElement.style.display = "none"; // Caso alguma categoria não tenha GIF mapeado
+  }
+
+  const descElement = document.getElementById("info-desc");
+  const textoDidatico = descricoesDidaticas[c.slot];
+
+  if (textoDidatico) {
+    descElement.textContent = textoDidatico;
+    descElement.style.display = "block";
+  } else {
+    descElement.style.display = "none";
+  }
 }
 
 function hideInfo() {
@@ -272,7 +394,6 @@ function showToast(msg) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => (t.style.display = "none"), 2200);
 }
-
 /* =============================================
    BOTÃO REINICIAR
    ============================================= */
