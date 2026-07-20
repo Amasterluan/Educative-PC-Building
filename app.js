@@ -378,8 +378,8 @@ function showInfo(id) {
 }
 
 function hideInfo() {
-  document.getElementById("info-empty").style.display = "";
-  document.getElementById("info-content").style.display = "none";
+  // document.getElementById("info-empty").style.display = "";
+  // document.getElementById("info-content").style.display = "none";
 }
 
 /* =============================================
